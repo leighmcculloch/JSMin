@@ -1,3 +1,8 @@
+/* Changes by Leigh McCulloch
+ *  - Changed from using stdin, stdout to using char allocated memory passed
+ *    into jsmin.
+ * Copyright (c) 2013 Leigh McCulloch. All rights reserved.
+ */
 /* jsmin.c
    2013-03-29
 
@@ -33,6 +38,20 @@ static int   theLookahead = EOF;
 static int   theX = EOF;
 static int   theY = EOF;
 
+static const char * in;
+static char * out;
+
+#define getc getc_from_in
+#define putc putc_to_out
+static int getc_from_in(FILE *f) {
+	if (!*in) {
+		return EOF;
+	}
+	return *(in++);
+}
+static int putc_to_out(int c, FILE *f) {
+	return *(out++) = c;
+}
 
 static void
 error(char* s)
@@ -229,7 +248,7 @@ action(int d)
 */
 
 static void
-jsmin()
+_jsmin()
 {
     if (peek() == 0xEF) {
         get();
@@ -291,16 +310,13 @@ jsmin()
 }
 
 
-/* main -- Output any command line arguments as comments
-        and then minify the input.
-*/
-extern int
-main(int argc, char* argv[])
-{
-    int i;
-    for (i = 1; i < argc; i += 1) {
-        fprintf(stdout, "// %s\n", argv[i]);
-    }
-    jsmin();
-    return 0;
+
+/* Minifies the JS in 'in', and writes it to 'out' null terminated.
+ * Out must be at least the same length allocated as 'in'.
+ */
+extern void
+jsmin(const char * const _in, char * const _out) {
+	in = _in;
+	out = _out;
+	_jsmin();
 }

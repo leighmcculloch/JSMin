@@ -1,7 +1,7 @@
 /* Changes by Leigh McCulloch
  *  - Changed from using stdin, stdout to using char allocated memory passed
  *    into jsmin.
- * Copyright (c) 2013 Leigh McCulloch. All rights reserved.
+ * Copyright (c) 2013 Leigh McCulloch. Same license as below.
  */
 /* jsmin.c
    2013-03-29

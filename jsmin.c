@@ -319,4 +319,5 @@ jsmin(const char * const _in, char * const _out) {
 	in = _in;
 	out = _out;
 	_jsmin();
+	*out = '\0'; // NULL terminate the string
 }
